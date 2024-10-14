@@ -6,7 +6,8 @@ metadata:
 spec:
   hosts:
   - "{{ include "question5.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local"
-  - thefowl.jalgraves.com
+  - oneflawedwage.com
+  - "*.oneflawedwage.com"
 
   gateways:
   - istio-system/web-gateway
