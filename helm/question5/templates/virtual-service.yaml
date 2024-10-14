@@ -1,0 +1,26 @@
+{{- if .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "question5.fullname" . }}
+spec:
+  hosts:
+  - "{{ include "question5.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local"
+  - thefowl.jalgraves.com
+
+  gateways:
+  - istio-system/web-gateway
+  - mesh # applies to all the sidecars in the mesh
+  http:
+  - route:
+    - destination:
+        port:
+          number: {{ .Values.containerPort }}
+        host: "{{ include "question5.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local"
+        subset: {{ include "question5.fullname" . }}
+      headers:
+        response:
+          remove:
+          - "x-envoy-upstream-service-time"
+          - "x-powered-by"
+{{- end }}

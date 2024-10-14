@@ -1,0 +1,13 @@
+{{- if .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ include "question5.fullname" . }}
+spec:
+  host: "{{ include "question5.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local"
+  trafficPolicy:
+    loadBalancer:
+      simple: LEAST_CONN
+  subsets:
+  - name: {{ include "question5.fullname" . }}
+{{- end }}
